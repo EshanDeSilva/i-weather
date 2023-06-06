@@ -9,9 +9,7 @@ export default function ThemeButton() {
         onChange={setIsDarkMode}
         checked={isDarkMode}
         size={70}
-        
       />
-      
     </div>
   );
 };

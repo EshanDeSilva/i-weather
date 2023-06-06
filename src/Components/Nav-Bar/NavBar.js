@@ -59,6 +59,11 @@ export default function NavBar() {
   const [theme, setTheme] = React.useState(localStorage.getItem('theme') || 'light');
   const [urlText, setUrlText] = React.useState('https://www.weatherapi.com/weather/widget.ashx?q=sri lanka&wid=3&tu=1&div=weatherapi-weather-widget-3');
   const [location, setLocation] = React.useState(localStorage.getItem('location') || 'Sri Lanka');
+  const [barColor, setBarColor] = React.useState("#1976d2");
+
+  const barTheme = {
+    backgroundColor: barColor
+  }
 
   React.useEffect(() => {
     localStorage.setItem('loaction', location);
@@ -66,13 +71,15 @@ export default function NavBar() {
 
     localStorage.setItem('theme', theme);
     document.body.className = theme;
-  }, [theme,location]);
+  }, [theme, location]);
 
   const toggleTheme = () => {
     if (theme === 'light') {
       setTheme('dark');
+      setBarColor('#333333');
     } else {
       setTheme('light');
+      setBarColor('#1976d2');
     }
   };
 
@@ -92,16 +99,16 @@ export default function NavBar() {
   return (
     <div>
       <Box className={`App ${theme}`} sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
+        <AppBar style={barTheme} position="static">
           <Toolbar>
 
             <IconButton
               onClick={toggleTheme}
-              style={{ height: "5px", width: "5px"}}
+              style={{ height: "5px", width: "5px" }}
               edge="start"
               color="inherit"
               aria-label="open drawer"
-              sx={{ mr: 5, ml:5 }}
+              sx={{ml:3, mr:5}}
             >
               <ThemeButton />
             </IconButton>
@@ -132,7 +139,7 @@ export default function NavBar() {
             >
               <SearchButton />
             </IconButton>
-            
+
           </Toolbar>
         </AppBar>
       </Box>
