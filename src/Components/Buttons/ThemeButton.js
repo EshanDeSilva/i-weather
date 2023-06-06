@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import DarkModeToggle from "react-dark-mode-toggle";
 
-export default function Button() {
+export default function ThemeButton() {
   const [isDarkMode, setIsDarkMode] = useState(() => false);
   return (
     <div>

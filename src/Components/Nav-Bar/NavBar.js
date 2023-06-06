@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
-import Button from '../Buttons/ThemeButton';
+import ThemeButton from './../Buttons/ThemeButton';
 import './style.css';
 
 const Search = styled('div')(({ theme }) => ({
@@ -69,41 +69,48 @@ export default function NavBar() {
     document.body.className = theme;
   }, [theme]);
 
+  const [textValue, setInputText] = React.useState('');
+  const printData = (e) => {
+    // 👇 Store the input value to local state
+    setInputText(e.target.value);
+  };
+
   return (
     <div>
       <Box className={`App ${theme}`} sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            onClick={toggleTheme}
-            style={{ height:"15px",padding:"-10px" }}
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-          >
-            <Button/>          
-          </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ flexGrow: 0.01, display: { xs: 'none', sm: 'block' } }}
-          >
-            iWeather
-          </Typography>
-          <Search sx={{ flexGrow: 0.2}}>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </Search>       
-        </Toolbar>
-      </AppBar>
-    </Box>
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton
+              onClick={toggleTheme}
+              style={{ height: "15px", padding: "-10px" }}
+              edge="start"
+              color="inherit"
+              aria-label="open drawer"
+              sx={{ mr: 2 }}
+            >
+              <ThemeButton />
+            </IconButton>
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ flexGrow: 0.01, display: { xs: 'none', sm: 'block' } }}
+            >
+              iWeather
+            </Typography>
+            <Search sx={{ flexGrow: 0.2 }}>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Search…"
+                inputProps={{ 'aria-label': 'search' }}
+                onChange={printData}
+              />
+            </Search>
+          </Toolbar>
+        </AppBar>
+      </Box>
     </div>
   );
 }
