@@ -8,7 +8,9 @@ import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import ThemeButton from './../Buttons/ThemeButton';
+import { Helmet } from 'react-helmet';
 import './style.css';
+import SearchButton from '../Buttons/SearchButton';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -54,9 +56,18 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function NavBar() {
 
-  const [theme, setTheme] = React.useState(
-    localStorage.getItem('theme') || 'light'
-  );
+  const [theme, setTheme] = React.useState(localStorage.getItem('theme') || 'light');
+  const [urlText, setUrlText] = React.useState('https://www.weatherapi.com/weather/widget.ashx?q=sri lanka&wid=3&tu=1&div=weatherapi-weather-widget-3');
+  const [location, setLocation] = React.useState(localStorage.getItem('location') || 'Sri Lanka');
+
+  React.useEffect(() => {
+    localStorage.setItem('loaction', location);
+    document.body.className = location;
+
+    localStorage.setItem('theme', theme);
+    document.body.className = theme;
+  }, [theme,location]);
+
   const toggleTheme = () => {
     if (theme === 'light') {
       setTheme('dark');
@@ -64,32 +75,37 @@ export default function NavBar() {
       setTheme('light');
     }
   };
-  React.useEffect(() => {
-    localStorage.setItem('theme', theme);
-    document.body.className = theme;
-  }, [theme]);
 
-  const [textValue, setInputText] = React.useState('');
   const printData = (e) => {
     // 👇 Store the input value to local state
-    setInputText(e.target.value);
+    if (e.target.value === "") {
+      setLocation("Sri Lanka");
+    } else {
+      setLocation(e.target.value);
+    }
   };
+
+  const setLocationUrl = (e) => {
+    setUrlText("https://www.weatherapi.com/weather/widget.ashx?q=" + location + "&wid=3&tu=1&div=weatherapi-weather-widget-3");
+  }
 
   return (
     <div>
       <Box className={`App ${theme}`} sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>
+
             <IconButton
               onClick={toggleTheme}
-              style={{ height: "15px", padding: "-10px" }}
+              style={{ height: "5px", width: "5px"}}
               edge="start"
               color="inherit"
               aria-label="open drawer"
-              sx={{ mr: 2 }}
+              sx={{ mr: 5, ml:5 }}
             >
               <ThemeButton />
             </IconButton>
+
             <Typography
               variant="h6"
               noWrap
@@ -98,6 +114,7 @@ export default function NavBar() {
             >
               iWeather
             </Typography>
+
             <Search sx={{ flexGrow: 0.2 }}>
               <SearchIconWrapper>
                 <SearchIcon />
@@ -108,9 +125,21 @@ export default function NavBar() {
                 onChange={printData}
               />
             </Search>
+
+            <IconButton
+              onClick={setLocationUrl}
+              style={{ height: "25px", borderRadius: "30px" }}
+            >
+              <SearchButton />
+            </IconButton>
+            
           </Toolbar>
         </AppBar>
       </Box>
+
+      <Helmet>
+        <script type='text/javascript' src={urlText} async></script>
+      </Helmet>
     </div>
   );
 }
