@@ -59,6 +59,7 @@ export default function NavBar() {
   const [theme, setTheme] = React.useState(localStorage.getItem('theme') || 'light');
   const [urlText, setUrlText] = React.useState('https://www.weatherapi.com/weather/widget.ashx?q=sri lanka&wid=3&tu=1&div=weatherapi-weather-widget-3');
   const [location, setLocation] = React.useState(localStorage.getItem('location') || 'Sri Lanka');
+  const [textValue,setTextValue] = React.useState("");
   const [barColor, setBarColor] = React.useState("#1976d2");
 
   const barTheme = {
@@ -86,14 +87,20 @@ export default function NavBar() {
   const printData = (e) => {
     // 👇 Store the input value to local state
     if (e.target.value === "") {
+      setTextValue(e.target.value);
       setLocation("Sri Lanka");
     } else {
+      setTextValue(e.target.value);
       setLocation(e.target.value);
     }
   };
 
   const setLocationUrl = (e) => {
+    if (e.target.value === "") {
+      setLocation("Sri Lanka");
+    }
     setUrlText("https://www.weatherapi.com/weather/widget.ashx?q=" + location + "&wid=3&tu=1&div=weatherapi-weather-widget-3");
+    setTextValue('');
   }
 
   return (
@@ -130,6 +137,7 @@ export default function NavBar() {
                 placeholder="Search…"
                 inputProps={{ 'aria-label': 'search' }}
                 onChange={printData}
+                value={textValue}
               />
             </Search>
 
